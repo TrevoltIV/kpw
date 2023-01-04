@@ -1,0 +1,32 @@
+
+
+
+.welcome-wrapper {
+    margin-top: 65px;
+}
+
+.welcome-content {
+    background: rgb(241, 240, 240);
+    margin: 0 15px 0 15px;
+
+    border-radius: 8px;
+
+    text-align: center;
+}
+
+.welcome-heading {
+    color: rgb(155, 155, 155);
+
+    padding-top: 12px;
+    font-family: 'Bebas Neue';
+    font-size: 1.8rem;
+    letter-spacing: 1px;
+}
+
+.welcome-text {
+    
+}
+
+.welcome-text:last-child {
+    padding: 0 15px 12px 15px;
+}

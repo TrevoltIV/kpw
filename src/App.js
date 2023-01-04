@@ -1,23 +1,29 @@
-import logo from './logo.svg';
-import './App.css';
+import './fonts.css'
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Home from './pages/Home'
+import GetQuote from './pages/GetQuote'
+import Contact from './pages/Contact'
+import Reviews from './pages/Reviews'
+import NoPage from './pages/NoPage'
+import Auth from './pages/Auth'
+import Dashboard from './pages/Dashboard'
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <BrowserRouter>
+      <Routes>
+        <Route index element={<Home />} />
+        <Route path="home" element={<Home />} />
+        <Route path="getquote" element={<GetQuote />} />
+        <Route path="contact" element={<Contact />} />
+        <Route path="reviews" element={<Reviews />} />
+        <Route path="login" element={<Auth />} />
+        <Route path="signup" element={<Auth />} />
+        <Route path="dashboard" element={<Dashboard />} />
+        <Route path="*" element={<NoPage />} />
+      </Routes>
+    </BrowserRouter>
     </div>
   );
 }

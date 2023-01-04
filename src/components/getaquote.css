@@ -1,0 +1,55 @@
+.getaquote-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.getaquote-content {
+    margin-top: 30px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.getaquote-heading {
+    color: #888;
+
+    font-family: 'Bebas Neue';
+    font-size: 2rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+}
+
+.getaquote-link {
+    background: gold;
+    color: #000;
+    margin-top: 18px;
+    padding: 18px 60px 18px 60px;
+
+    border-radius: 6px;
+    box-shadow: 0 0 6px rgba(0,0,0,0.2);
+
+    text-decoration: none;
+    font-family: 'Bebas Neue';
+    font-size: 1.9rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+.getaquote-link:hover {
+    background: rgb(201, 171, 0);
+    color: #333;
+    margin-top: 18px;
+    padding: 18px 60px 18px 60px;
+
+    border-radius: 6px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.5);
+
+    text-decoration: none;
+    font-family: 'Bebas Neue';
+    font-size: 1.9rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
