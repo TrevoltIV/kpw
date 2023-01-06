@@ -27,7 +27,7 @@
 }
 
 /*
-*NAV MENU
+*   Nav Menu Button
 */
 
 .header-nav-btn {
@@ -108,13 +108,16 @@
     transition: all .5s ease-in-out;
 }
 
+/*
+*   Nav Menu
+*/
+
 .header-nav-menu {
     background: #009AD4;
     position: absolute;
     right: 6px;
     top: 60px;
     width: 200px;
-    height: 250px;
     z-index: -10;
 
     border-bottom-left-radius: 10px;
@@ -133,6 +136,7 @@
     background: #3A75BC;
     width: 90%;
     height: 40px;
+    margin-top: 10px;
 
     display: flex;
     justify-content: center;
@@ -184,10 +188,9 @@
 .header-nav-menu-hidden {
     background: #009AD4;
     position: absolute;
-    top: -200px;
+    top: -300px;
     right: 6px;
     width: 200px;
-    height: 250px;
     z-index: -20;
 
     border-bottom-left-radius: 10px;

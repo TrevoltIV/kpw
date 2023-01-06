@@ -1,7 +1,7 @@
 import './auth.css'
 import { useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
-import { app, db, auth } from '../firebase/config'
+import { app, db, auth, user } from '../firebase/config'
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth"
 import { collection, doc, setDoc, getDoc } from 'firebase/firestore'
 import Header from '../components/Header'
@@ -10,12 +10,12 @@ import Header from '../components/Header'
 
 export default function Auth() {
     const navigate = useNavigate()
+    const path = useLocation().pathname
     const [login, setLogin] = useState(true)
-    const location = useLocation()
     const [data, setData] = useState({})
     const [loaded, setLoaded] = useState(false)
     const [signupSuccess, setSignupSuccess] = useState(false)
-    const user = auth.currentUser
+    const [userUid, setUserUid] = useState(null)
 
     // Toggle for login/signup forms to change between the two
     const toggleLogin = () => {
@@ -30,11 +30,11 @@ export default function Auth() {
 
     // Check if the path is /signup and display signup form if true
     useEffect(() => {
-        if (location.pathname === "/signup" && !loaded) {
+        if (path === "/signup" && !loaded) {
             setLogin(false)
             setLoaded(true)
         }
-    }, [location.pathname, loaded])
+    }, [path, loaded])
 
     // Update state with input values
     const handleInput = (event) => {
@@ -46,9 +46,10 @@ export default function Auth() {
     // Handle signup form submission upon clicking the submit button
     const handleSubmit = async (method) => {
         if (signupSuccess) {
-            await setDoc(doc(db, "users", data.email), {
+            await setDoc(doc(db, "users", userUid), {
                 firstname: data.firstname,
                 lastname: data.lastname,
+                email: data.email,
                 username: data.username,
                 status: "client"
             });
@@ -57,9 +58,9 @@ export default function Auth() {
             if (data.password === data.confirmPassword) {
                 // Create user in firebase auth if passwords match
                 createUserWithEmailAndPassword(auth, data.email, data.password)
-                .then((response) => {
+                .then((response, cred) => {
                     // Create user in firestore database if sign up is successful
-                    
+                    setUserUid(response.user.uid)
                     setLogin(true)
                     setSignupSuccess(true)
                 })
