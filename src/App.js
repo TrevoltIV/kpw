@@ -8,9 +8,9 @@ import NoPage from './pages/NoPage'
 import Auth from './pages/Auth'
 import Dashboard from './pages/Dashboard'
 
-function App() {
+export default function App() {
   return (
-    <div className="App">
+    <div className="KPW_app">
       <BrowserRouter>
       <Routes>
         <Route index element={<Home />} />
@@ -27,5 +27,3 @@ function App() {
     </div>
   );
 }
-
-export default App;

@@ -18,12 +18,37 @@
 }
 
 .header-logo-wrapper {
-    width: 100px;
+    width: 60px;
     margin-top: 60px;
 }
 
 .header-logo {
+    background: #fff;
+    position: relative;
+    top: 1px;
     width: 100%;
+
+    border: solid 2px #fff;
+    box-shadow: -3px 3px 10px rgba(0,0,0,0.5);
+
+    cursor: pointer;
+
+    transform: rotate(-45deg);
+    transition: all .26s ease-in-out;
+}
+
+.header-logo-unloaded {
+    background: #fff;
+    position: relative;
+    top: -110px;
+    width: 100%;
+
+    border: solid 2px #fff;
+    box-shadow: -3px 3px 10px rgba(0,0,0,0.5);
+
+    cursor: pointer;
+
+    transform: rotate(-45deg);
 }
 
 /*

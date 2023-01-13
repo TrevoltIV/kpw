@@ -35,24 +35,37 @@ export default function Header(props) {
         const menuBtn = document.querySelector('.header-nav-btn')
         const menuBtnBurger = document.querySelector('.header-nav-btn-burger')
         const menuBtnBurgerActive = document.querySelector('.header-nav-btn-burger-active')
+
         window.addEventListener('mouseup', (e) => {
             if (e.target !== menu && e.target.parentNode !== menu && e.target !== menuBtn && e.target !== menuBtnBurger && e.target !== menuBtnBurgerActive) {
                 setNavMenu(false)
             }
         })
+
+        const logo = document.querySelector('.header-logo-unloaded')
+        setTimeout(() => {
+            logo.classList.remove('header-logo-unloaded')
+            logo.classList.add('header-logo')
+        }, 10)
     })
+
+    // Navigate to home page when logo is clicked
+    // Has to be done this way because anchor tag can't be rotated
+    const handleLogoClick = () => {
+        navigate("/")
+    }
+
     return (
         <div className="header-wrapper">
             <div className="header">
                 <div className="header-nav-btn"></div>
                 <div className="header-logo-wrapper">
-                    <a href="/">
-                        <img
-                            className="header-logo"
-                            src={Image}
-                            alt="Koerner Pressure Washing Logo"
-                        />
-                    </a>
+                    <img
+                        onClick={handleLogoClick}
+                        className="header-logo-unloaded"
+                        src={Image}
+                        alt="Koerner Pressure Washing Logo"
+                    />
                 </div>
                 {/* Nav Menu Button */}
                 <div

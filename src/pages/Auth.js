@@ -39,20 +39,19 @@ export default function Auth() {
     // Update state with input values
     const handleInput = (event) => {
         let newInput = { [event.target.name]: event.target.value }
-
         setData({ ...data, ...newInput })
     }
 
     // Handle signup form submission upon clicking the submit button
     const handleSubmit = async (method) => {
         if (signupSuccess) {
-            await setDoc(doc(db, "users", userUid), {
+            await setDoc(doc(db, "users", data.email), {
+                email: data.email,
                 firstname: data.firstname,
                 lastname: data.lastname,
-                email: data.email,
                 username: data.username,
-                status: "client"
-            });
+                status: "client",
+            })
         }
         if (method === "signup") {
             if (data.password === data.confirmPassword) {
@@ -65,7 +64,7 @@ export default function Auth() {
                     setSignupSuccess(true)
                 })
                 .catch((err) => {
-                    alert(err.message)
+                    alert("Signup Failed: " + err.message)
                 })
             } else {
                 alert("Passwords do not match.")
@@ -76,7 +75,7 @@ export default function Auth() {
                 navigate("/dashboard")
             })
             .catch((err) => {
-                alert(err.message)
+                alert("Login Failed: " + err.message)
             })
         }
     }
