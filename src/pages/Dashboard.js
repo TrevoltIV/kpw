@@ -64,7 +64,7 @@ export default function Dashboard() {
                         })
                     }
                 } else if (userData.email !== user.email && userData.email != null) {
-                    alert("Authentication Error: User account changed.") // TODO: For some reason when user logs out and logs back in with diff account, this error throws
+                    alert("Authentication Error: User account changed.") // The error problem upon login is NOT this error somehow...
                     auth.signOut()
                     .then (() => {
                         setUserData({
