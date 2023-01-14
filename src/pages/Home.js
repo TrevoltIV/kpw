@@ -1,8 +1,8 @@
 import './home.css'
 import Header from '../components/Header'
-import Welcome from '../components/Welcome'
-import BeforeAfter from '../components/BeforeAfter'
-import GetAQuote from '../components/GetAQuote'
+import Welcome from '../components/home-page/Welcome'
+import BeforeAfter from '../components/home-page/BeforeAfter'
+import GetAQuote from '../components/home-page/GetAQuote'
 
 
 export default function Home() {

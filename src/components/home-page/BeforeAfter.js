@@ -1,6 +1,6 @@
 import './beforeafter.css'
-import BeforeImage from '../images/before.jpg'
-import AfterImage from '../images/after.jpg'
+import BeforeImage from '../../images/before.jpg'
+import AfterImage from '../../images/after.jpg'
 
 
 export default function BeforeAfter() {
