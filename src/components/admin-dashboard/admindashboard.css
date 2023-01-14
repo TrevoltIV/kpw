@@ -1,0 +1,49 @@
+
+
+.dashboard-wrapper {
+
+}
+
+.dashboard-header {
+    background: rgb(241, 241, 241);
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.dashboard-header-title {
+    margin-top: 55px;
+    color: #3A75BC;
+    font-size: 45px;
+    font-family: 'Bebas Neue';
+    letter-spacing: 1px;
+}
+
+.dashboard-header-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.dashboard-user-status-text {
+    color: #000;
+    font-size: 15px;
+}
+
+.dashboard-header-btns {
+    width: 100%;
+    margin-top: 22px;
+    margin-bottom: 10px;
+
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.dashboard-header-btn {
+    padding: 5px 2px 5px 2px;
+    font-size: 0.85rem;
+}

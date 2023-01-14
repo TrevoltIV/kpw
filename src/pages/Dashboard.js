@@ -1,34 +1,29 @@
 import './dashboard.css'
-import {
-    useEffect,
-    useState
-} from 'react'
-import {
-    db,
-    auth,
-} from '../firebase/config'
-import {
-    onAuthStateChanged
-} from 'firebase/auth'
-import {
-        collection,
-        query,
-        where,
-        getDocs
-} from 'firebase/firestore'
-import {
-    useNavigate
-} from 'react-router-dom'
+import { useEffect, useState } from 'react'
+import { db, auth, } from '../firebase/config'
+import { onAuthStateChanged } from 'firebase/auth'
+import { collection, query, where, getDocs } from 'firebase/firestore'
+import { useNavigate } from 'react-router-dom'
 import Header from '../components/Header'
+import AdminDashboard from '../components/admin-dashboard/AdminDashboard'
+import EmployeeDashboard from '../components/employee-dashboard/EmployeeDashboard'
+import ClientDashboard from '../components/client-dashboard/ClientDashboard'
 
 export default function Dashboard() {
+    const [location, setLocation] = useState({
+        longitude: null,
+        latitude: null,
+    })
     navigator.geolocation.getCurrentPosition((position) => {
-        console.log("Latitude is :", position.coords.latitude)
-        console.log("Longitude is :", position.coords.longitude)
+        setLocation({
+            longitude: position.coords.longitude,
+            latitude: position.coords.latitude
+        })
     })
 
     const navigate = useNavigate()
     const [userLoggedIn, setUserLoggedIn] = useState(false)
+    const [logout, setLogout] = useState(false)
     const [userData, setUserData] = useState({
         email: null,
         firstname: null,
@@ -50,113 +45,70 @@ export default function Dashboard() {
                         querySnapshot.forEach((doc) => {
                             setUserData(doc.data())
                         })
-                    } else if (userData.email != null) {
+                    } else if (querySnapshot.empty) {
                         alert("Authentication Error: User data not found.")
-                        auth.signOut()
-                        .then(() => {
-                            setUserData({
-                                email: null,
-                                firstname: null,
-                                lastname: null,
-                                status: null,
-                            })
-                            navigate("/login")
-                        })
-                    }
-                } else if (userData.email !== user.email && userData.email != null) {
-                    alert("Authentication Error: User account changed.") // The error problem upon login is NOT this error somehow...
-                    auth.signOut()
-                    .then (() => {
                         setUserData({
                             email: null,
                             firstname: null,
                             lastname: null,
                             status: null,
                         })
-                        navigate("/login")
-                    })
+                        auth.signOut()
+                        .then(() => {
+                            navigate("/login")
+                        })
+                        .catch((err) => {
+                            alert(err.message)
+                        })
+                    }
                 }
             } else {
                 navigate("/login")
             }
         })
-    }, [navigate, userData.email])
+    }, [navigate, userData, auth])
 
 
     // Handle logout button click
-    const handleLogout = () => {
-        auth.signOut()
-        .then(() => {
+    useEffect(() => {
+        if (logout) {
             setUserData({
                 email: null,
                 firstname: null,
                 lastname: null,
                 status: null,
             })
-            navigate("/login")
-        })
-        .catch((err) => {
-            alert(err.message)
-        })
-    }
+            auth.signOut()
+            .then(() => {
+                navigate("/login")
+            })
+            .catch((err) => {
+                alert(err.message)
+            })
+        }
+    }, [logout, navigate])
     
     if (userLoggedIn) {
         if (userData.status === "client") {
             return (
-                <div className="dashboard-wrapper">
-                    <Header page="dashboard" />
-                    <h1>Dashboard page - client</h1>
-                    <div className="dashboard-user-status">
-                        <p className="dashboard-user-status-text">Logged in as: {userData.username}</p>
-                        <p className="dashboard-user-status-text">User status: Client</p>
-                    </div>
-                    <div className="dashboard-content">
-                        <button
-                            className="dashboard-logout-btn"
-                            type="button"
-                            onClick={handleLogout}>
-                                Logout
-                        </button>
-                    </div>
-                </div>
+                <ClientDashboard
+                    userData={userData}
+                    setLogout={setLogout}
+                />
             )
         } else if (userData.status === "employee") {
             return (
-                <div className="dashboard-wrapper">
-                    <Header page="dashboard" />
-                    <h1>Dashboard</h1>
-                    <div className="dashboard-user-status">
-                        <p className="dashboard-user-status-text">Logged in as: {userData.username}</p>
-                        <p className="dashboard-user-status-text">User status: Employee</p>
-                    </div>
-                    <div className="dashboard-content">
-                        <button
-                            className="dashboard-logout-btn"
-                            type="button"
-                            onClick={handleLogout}>
-                                Logout
-                        </button>
-                    </div>
-                </div>
+                <EmployeeDashboard
+                    userData={userData}
+                    setLogout={setLogout}
+                />
             )
         } else if (userData.status === "admin") {
             return (
-                <div className="dashboard-wrapper">
-                    <Header page="dashboard" />
-                    <h1>Dashboard</h1>
-                    <div className="dashboard-user-status">
-                        <p className="dashboard-user-status-text">Logged in as: {userData.username}</p>
-                        <p className="dashboard-user-status-text">User status: Admin</p>
-                    </div>
-                    <div className="dashboard-content">
-                        <button
-                            className="dashboard-logout-btn"
-                            type="button"
-                            onClick={handleLogout}>
-                                Logout
-                        </button>
-                    </div>
-                </div>
+                <AdminDashboard
+                    userData={userData}
+                    setLogout={setLogout}
+                />
             )
         } else if (userData.status != null) {
             alert("Authentication Error: User status not found. Cannot authenticate viewport.")
