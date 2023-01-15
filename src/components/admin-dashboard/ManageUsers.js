@@ -14,6 +14,8 @@ export default function ManageUsers(props) {
     const [deleteUser, setDeleteUser] = useState(false)
     const [userEmail, setUserEmail] = useState(null)
     const [editInput, setEditInput] = useState({})
+    const [usersIndex, setUsersIndex] = useState(10)
+    const [usersListEnd, setUsersListEnd] = useState(false)
 
     // Call fetchUsers() when component mounts
     useEffect(() => {
@@ -66,82 +68,137 @@ export default function ManageUsers(props) {
         setDeleteUser(true)
     }
 
+    // Paginate users list
+    const handlePagination = (direction) => {
+        if (direction === "next") {
+            if (users[usersIndex + 1] != undefined) {
+                setUsersIndex(usersIndex + 10)
+            } else {
+                setUsersListEnd(true)
+                setTimeout(() => setUsersListEnd(false), 5000)
+            }
+        } else if (direction === "prev") {
+            if (usersIndex >= 20) {
+                setUsersIndex(usersIndex - 10)
+            }
+        }
+    }
+
     return (
         <div className="dashboard-content-manageusers">
             <div className="dashboard-manageusers-btn-wrapper">
-                <button onClick={() => props.setPage("home")} type="button" className="dashboard-home-btn">Back to Home</button>
+                <button
+                    onClick={() => props.setPage("home")}
+                    type="button"
+                    className="dashboard-home-btn">
+                        Back to Home
+                </button>
             </div>
-            <div className="dashboard-users-wrapper">
-                {editUser &&
+            {editUser &&
                 // Edit user modal
-                    <div className="dashboard-edituser-modal">
-                        <div className="dashboard-edituser-modal-inputs">
-                            <p>{userEmail}</p>
-                            <input
-                                onChange={(event) => handleEditInput(event)}
-                                name="firstname"
-                                type="text"
-                                placeholder="First name"
-                            />
-                            <input
-                                onChange={(event) => handleEditInput(event)}
-                                name="lastname"
-                                type="text"
-                                placeholder="Last name"
-                            />
-                            <input
-                                onChange={(event) => handleEditInput(event)}
-                                name="username"
-                                type="text"
-                                placeholder="Username"
-                            />
-                            <input
-                                onChange={(event) => handleEditInput(event)}
-                                name="email"
-                                type="text"
-                                placeholder="Email"
-                            />
-                            <input
-                                onChange={(event) => handleEditInput(event)}
-                                name="status"
-                                type="text"
-                                placeholder="Status"
-                            />
-                        </div>
-                        {/* Edit user modal buttons */}
-                        <div className="dashboard-edituser-modal-btns">
-                            <button
-                                onClick={() => setEditUser(false)}
-                                type="button"
-                                className="dashboard-edituser-modal-btn">
-                                    Cancel
-                            </button>
-                            <button
-                                onClick={() => handleEditUser()}
-                                type="button"
-                                className="dashboard-edituser-modal-btn">
-                                    Save
-                            </button>
-                        </div>
+                <div className="dashboard-edituser-modal">
+                    <div className="dashboard-edituser-modal-inputs">
+                        <p>{userEmail}</p>
+                        <input
+                            onChange={(event) => handleEditInput(event)}
+                            name="firstname"
+                            type="text"
+                            placeholder="First name"
+                        />
+                        <input
+                            onChange={(event) => handleEditInput(event)}
+                            name="lastname"
+                            type="text"
+                            placeholder="Last name"
+                        />
+                        <input
+                            onChange={(event) => handleEditInput(event)}
+                            name="username"
+                            type="text"
+                            placeholder="Username"
+                        />
+                        <input
+                            onChange={(event) => handleEditInput(event)}
+                            name="email"
+                            type="text"
+                            placeholder="Email"
+                        />
+                        <input
+                            onChange={(event) => handleEditInput(event)}
+                            name="status"
+                            type="text"
+                            placeholder="Status"
+                        />
                     </div>
-                }
+                    {/* Edit user modal buttons */}
+                    <div className="dashboard-edituser-modal-btns">
+                        <button
+                            onClick={() => setEditUser(false)}
+                            type="button"
+                            className="dashboard-edituser-modal-btn">
+                                Cancel
+                        </button>
+                        <button
+                            onClick={() => handleEditUser()}
+                            type="button"
+                            className="dashboard-edituser-modal-btn">
+                                Save
+                        </button>
+                    </div>
+                </div>
+            }
+            <div className="dashboard-users-wrapper">
+                <p>{"Page: " + usersIndex / 10}</p>
                 {/* Users list */}
-                {users.map((user, index) => {
-                    return (
-                        <div key={index} className="dashboard-user-wrapper">
-                            <div className="dashboard-user-info">
-                            <p className="dashboard-user-info-text">Name: {user.firstname + " " + user.lastname}</p>
-                                <p className="dashboard-user-info-text">Username: {user.username}</p>
-                                <p className="dashboard-user-info-text">Email: {user.email}</p>
-                                <p className="dashboard-user-info-text">User status: {user.status}</p>
+                {
+                    users.slice(usersIndex - 10, usersIndex).map((user, index) => {
+                        return (
+                            <div key={index} className="dashboard-user-wrapper">
+                                <div className="dashboard-user-info">
+                                    <p className="dashboard-user-info-text">
+                                        Name: {user.firstname + " " + user.lastname}
+                                    </p>
+                                    <p className="dashboard-user-info-text">
+                                        Username: {user.username}
+                                    </p>
+                                    <p className="dashboard-user-info-text">
+                                        Email: {user.email}
+                                    </p>
+                                    <p className="dashboard-user-info-text">
+                                        User status: {user.status}
+                                    </p>
+                                </div>
+                                <div className="dashboard-user-btns">
+                                    <button
+                                        onClick={() => handleEditClick(user.email)}
+                                        type="button"
+                                        className="dashboard-user-btn">
+                                            Edit
+                                    </button>
+                                    <button
+                                        onClick={() => handleDeleteClick(user.email)}
+                                        type="button"
+                                        className="dashboard-user-btn">
+                                            Delete
+                                    </button>
+                                </div>
                             </div>
-                            <div className="dashboard-user-btns">
-                                <button onClick={() => handleEditClick(user.email)} type="button" className="dashboard-user-btn">Edit</button>
-                                <button onClick={() => handleDeleteClick(user.email)} type="button" className="dashboard-user-btn">Delete</button>
-                            </div>
-                        </div>
-                    )
-                })}
+                        )
+                    })
+                }
+                {usersListEnd && <p className="user-list-end">No more users to show.</p>}
+                <div className="dashboard-users-pagination">
+                    <button
+                        onClick={() => handlePagination("prev")}
+                        className="dashboard-user-pagination-btn">
+                            Prev
+                    </button>
+                    <button
+                        onClick={() => handlePagination("next")}
+                        className="dashboard-user-pagination-btn">
+                            Next
+                    </button>
+                </div>
             </div>
         </div>
     )

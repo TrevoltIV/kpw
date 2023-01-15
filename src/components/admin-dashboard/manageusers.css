@@ -73,3 +73,18 @@
     justify-content: space-around;
     align-items: center;
 }
+
+.user-list-end {
+    background: red;
+    color: #fff;
+    width: 100%;
+    padding: 6px 0 6px 0;
+
+    font-size: 18px;
+    font-weight: 800;
+    text-align: center;
+}
+
+.dashboard-users-pagination {
+    margin-bottom: 50px;
+}
