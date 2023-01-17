@@ -1,8 +1,9 @@
 import './manageusers.css'
-import { useEffect, useState } from 'react'
+import { lazy, useEffect, useState } from 'react'
 import { db, auth, } from '../../firebase/config'
 import { collection, query, where, getDocs, setDoc, doc } from 'firebase/firestore'
 import { setDefaultEventParameters } from 'firebase/analytics'
+import Loading from '../animations/Loading'
 
 
 
@@ -16,11 +17,19 @@ export default function ManageUsers(props) {
     const [editInput, setEditInput] = useState({})
     const [usersIndex, setUsersIndex] = useState(10)
     const [usersListEnd, setUsersListEnd] = useState(false)
+    const [loading, setLoading] = useState(true)
 
     // Call fetchUsers() when component mounts
     useEffect(() => {
         if (!loaded) {
             fetchUsers()
+        }
+    }, [loaded])
+
+    useEffect(() => {
+        const userDiv = document.querySelector("#users")
+        if (userDiv) {
+            setLoading(false)
         }
     }, [loaded])
 
@@ -86,14 +95,16 @@ export default function ManageUsers(props) {
 
     return (
         <div className="dashboard-content-manageusers">
-            <div className="dashboard-manageusers-btn-wrapper">
-                <button
-                    onClick={() => props.setPage("home")}
-                    type="button"
-                    className="dashboard-home-btn">
-                        Back to Home
-                </button>
-            </div>
+            {!loading &&
+                <div className="dashboard-home-btn-wrapper">
+                    <button
+                        onClick={() => props.setPage("home")}
+                        type="button"
+                        className="dashboard-home-btn">
+                            Back to Home
+                    </button>
+                </div>
+            }
             {editUser &&
                 // Edit user modal
                 <div className="dashboard-edituser-modal">
@@ -147,13 +158,22 @@ export default function ManageUsers(props) {
                     </div>
                 </div>
             }
-            <div className="dashboard-users-wrapper">
-                <p>{"Page: " + usersIndex / 10}</p>
-                {/* Users list */}
-                {
-                    users.slice(usersIndex - 10, usersIndex).map((user, index) => {
-                        return (
-                            <div key={index} className="dashboard-user-wrapper">
+                {!loading &&
+                    <div className="page-index">
+                        <p>Page: {usersIndex / 10}</p>
+                    </div>
+                }
+            {loading &&
+                <div className="dashboard-users-loading-wrapper">
+                    <Loading />
+                </div>
+            }
+            {/* Users list */}
+            {
+                users.slice(usersIndex - 10, usersIndex).map((user, index) => {
+                    return (
+                        <div className="dashboard-users-wrapper">
+                            <div id="users" key={index} className="dashboard-user-wrapper">
                                 <div className="dashboard-user-info">
                                     <p className="dashboard-user-info-text">
                                         Name: {user.firstname + " " + user.lastname}
@@ -183,10 +203,12 @@ export default function ManageUsers(props) {
                                     </button>
                                 </div>
                             </div>
+                        </div>
                         )
                     })
                 }
-                {usersListEnd && <p className="user-list-end">No more users to show.</p>}
+            {usersListEnd && <p className="user-list-end">No more users to show.</p>}
+            {!loading &&
                 <div className="dashboard-users-pagination">
                     <button
                         onClick={() => handlePagination("prev")}
@@ -199,7 +221,7 @@ export default function ManageUsers(props) {
                             Next
                     </button>
                 </div>
-            </div>
+            }
         </div>
     )
 }

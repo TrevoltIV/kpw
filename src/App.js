@@ -1,12 +1,14 @@
 import './fonts.css'
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Home from './pages/Home'
-import GetQuote from './pages/GetQuote'
-import Contact from './pages/Contact'
-import Reviews from './pages/Reviews'
-import NoPage from './pages/NoPage'
-import Auth from './pages/Auth'
-import Dashboard from './pages/Dashboard'
+import { BrowserRouter, Routes, Route } from "react-router-dom"
+import { lazy } from 'react'
+const Home = lazy(() => import('./pages/Home'))
+const GetQuote = lazy(() => import('./pages/GetQuote'))
+const Contact = lazy(() => import('./pages/Contact'))
+const Reviews = lazy(() => import('./pages/Reviews'))
+const NoPage = lazy(() => import('./pages/NoPage'))
+const Auth = lazy(() => import('./pages/Auth'))
+const Dashboard = lazy(() => import('./pages/Dashboard'))
+
 
 export default function App() {
   return (
