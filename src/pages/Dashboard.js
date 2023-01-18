@@ -1,13 +1,13 @@
 import './dashboard.css'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, lazy } from 'react'
 import { db, auth, user } from '../firebase/config'
 import { onAuthStateChanged } from 'firebase/auth'
 import { collection, query, where, getDocs } from 'firebase/firestore'
 import { useNavigate } from 'react-router-dom'
-import Header from '../components/Header'
-import AdminDashboard from '../components/admin-dashboard/AdminDashboard'
-import EmployeeDashboard from '../components/employee-dashboard/EmployeeDashboard'
-import ClientDashboard from '../components/client-dashboard/ClientDashboard'
+const Header = lazy(() => import('../components/Header'))
+const AdminDashboard = lazy(() => import('../components/admin-dashboard/AdminDashboard'))
+const EmployeeDashboard = lazy(() => import('../components/employee-dashboard/EmployeeDashboard'))
+const ClientDashboard = lazy(() => import('../components/client-dashboard/ClientDashboard'))
 
 export default function Dashboard() {
     const [location, setLocation] = useState({

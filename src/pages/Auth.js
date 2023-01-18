@@ -1,10 +1,10 @@
 import './auth.css'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, lazy } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { app, db, auth, user } from '../firebase/config'
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth"
 import { collection, doc, setDoc, getDoc } from 'firebase/firestore'
-import Header from '../components/Header'
+const Header = lazy(() => import('../components/Header'))
 
 
 

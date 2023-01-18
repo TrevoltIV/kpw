@@ -1,12 +1,12 @@
 import './home.css'
-import Header from '../components/Header'
-import Welcome from '../components/home-page/Welcome'
-import BeforeAfter from '../components/home-page/BeforeAfter'
-import GetAQuote from '../components/home-page/GetAQuote'
 import { doc, setDoc, getDoc, collection, where, query, getDocs } from 'firebase/firestore'
 import { db, auth, user } from '../firebase/config'
 import axios from 'axios'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, lazy } from 'react'
+const GetAQuote = lazy(() => import('../components/home-page/GetAQuote'))
+const BeforeAfter = lazy(() => import('../components/home-page/BeforeAfter'))
+const Welcome = lazy(() => import('../components/home-page/Welcome'))
+const Header = lazy(() => import('../components/Header'))
 
 
 export default function Home() {
@@ -15,6 +15,7 @@ export default function Home() {
     const [visits, setVisits] = useState(null)
     const [userIP, setUserIP] = useState(null)
     const [userData , setUserData] = useState(null)
+
 
     // Fetch user's IP address and add to state
     const fetchIP = async () => {

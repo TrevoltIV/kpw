@@ -1,5 +1,6 @@
 import './nopage.css'
-import Header from '../components/Header'
+import { lazy } from 'react'
+const Header = lazy(() => import('../components/Header'))
 
 
 export default function NoPage() {
