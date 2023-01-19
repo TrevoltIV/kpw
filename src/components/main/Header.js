@@ -1,10 +1,10 @@
 import './header.css'
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { app, db, auth } from '../firebase/config'
+import { app, db, auth } from '../../firebase/config'
 import { onAuthStateChanged } from 'firebase/auth'
 import { collection, doc, setDoc, getDoc } from 'firebase/firestore'
-import Image from '../images/KPW_logo.png'
+import Image from '../../images/KPW_logo.png'
 
 
 export default function Header(props) {
@@ -42,6 +42,7 @@ export default function Header(props) {
             }
         })
 
+        // Animate logo drop-in on page load
         const logo = document.querySelector('.header-logo-unloaded')
         setTimeout(() => {
             logo.classList.remove('header-logo-unloaded')

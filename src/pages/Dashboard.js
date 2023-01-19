@@ -4,7 +4,7 @@ import { db, auth, user } from '../firebase/config'
 import { onAuthStateChanged } from 'firebase/auth'
 import { collection, query, where, getDocs } from 'firebase/firestore'
 import { useNavigate } from 'react-router-dom'
-const Header = lazy(() => import('../components/Header'))
+const Header = lazy(() => import('../components/main/Header'))
 const AdminDashboard = lazy(() => import('../components/admin-dashboard/AdminDashboard'))
 const EmployeeDashboard = lazy(() => import('../components/employee-dashboard/EmployeeDashboard'))
 const ClientDashboard = lazy(() => import('../components/client-dashboard/ClientDashboard'))

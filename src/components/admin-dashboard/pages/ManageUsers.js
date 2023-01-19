@@ -1,15 +1,16 @@
 import './manageusers.css'
 import { lazy, useEffect, useState } from 'react'
-import { db, auth, } from '../../firebase/config'
+import { db, auth, } from '../../../firebase/config'
 import { collection, query, where, getDocs, setDoc, doc } from 'firebase/firestore'
 import { setDefaultEventParameters } from 'firebase/analytics'
-import Loading from '../animations/Loading'
+import Loading from '../../animations/Loading'
 
 
 
 
 export default function ManageUsers(props) {
     const [users, setUsers] = useState([])
+    const [userToEdit, setUserToEdit] = useState({})
     const [loaded, setLoaded] = useState(false)
     const [editUser, setEditUser] = useState(false)
     const [deleteUser, setDeleteUser] = useState(false)
@@ -49,8 +50,9 @@ export default function ManageUsers(props) {
     }
 
     // Display edit user modal when btn is clicked
-    const handleEditClick = (userEmail) => {
-        setUserEmail(userEmail)
+    const handleEditClick = (userObject) => {
+        setUserToEdit(userObject.email)
+        setEditInput(userObject)
         setEditUser(true)
     }
 
@@ -61,9 +63,8 @@ export default function ManageUsers(props) {
     }
 
     // Update user data in firestore
-    // TODO: Query for user data and update only the fields that have been changed
     const handleEditUser = async () => {
-        await setDoc(doc(db, "users", userEmail), editInput)
+        await setDoc(doc(db, "users", userToEdit), editInput)
         .then(() => {
             setEditUser(false)
             setLoaded(false)
@@ -72,9 +73,13 @@ export default function ManageUsers(props) {
     }
 
     // Display delete user modal when btn is clicked
-    const handleDeleteClick = (userEmail) => {
-        setUserEmail(userEmail)
+    const handleDeleteClick = (input) => {
+        setUserEmail(input)
         setDeleteUser(true)
+    }
+
+    const handleDeleteUser = (userToDelete) => {
+
     }
 
     // Paginate users list
@@ -93,6 +98,7 @@ export default function ManageUsers(props) {
         }
     }
 
+    // TODO: Split these sections into separate components
     return (
         <div className="dashboard-content-manageusers">
             {!loading &&
@@ -109,7 +115,7 @@ export default function ManageUsers(props) {
                 // Edit user modal
                 <div className="dashboard-edituser-modal">
                     <div className="dashboard-edituser-modal-inputs">
-                        <p>{userEmail}</p>
+                        <p>{userToEdit}</p>
                         <input
                             onChange={(event) => handleEditInput(event)}
                             name="firstname"
@@ -158,11 +164,35 @@ export default function ManageUsers(props) {
                     </div>
                 </div>
             }
-                {!loading &&
-                    <div className="page-index">
-                        <p>Page: {usersIndex / 10}</p>
+            {deleteUser &&
+                // Delete use modal
+                <div className="dashboard-deleteuser-modal">
+                    <p>Are you sure you want to delete this user?</p>
+                    <p>{userEmail}</p>
+                    {/* Delete user modal buttons */}
+                    <div className="dashboard-deleteuser-modal-btns">
+                        <button
+                            onClick={() => setDeleteUser(false)}
+                            type="button"
+                            className="dashboard-deleteuser-modal-btn">
+                                Cancel
+                        </button>
+                        <button
+                            onClick={() => handleDeleteUser()}
+                            type="button"
+                            className="dashboard-deleteuser-modal-btn">
+                                Delete
+                        </button>
                     </div>
-                }
+                </div>
+            }
+            {/* Show page counter once page is loaded */}
+            {!loading &&
+                <div className="page-index">
+                    <p>Page: {usersIndex / 10}</p>
+                </div>
+            }
+            {/* Show loading animation when page is loading */}
             {loading &&
                 <div className="dashboard-users-loading-wrapper">
                     <Loading />
@@ -172,7 +202,7 @@ export default function ManageUsers(props) {
             {
                 users.slice(usersIndex - 10, usersIndex).map((user, index) => {
                     return (
-                        <div className="dashboard-users-wrapper">
+                        <div className="dashboard-users-wrapper" key={index}>
                             <div id="users" key={index} className="dashboard-user-wrapper">
                                 <div className="dashboard-user-info">
                                     <p className="dashboard-user-info-text">
@@ -190,7 +220,7 @@ export default function ManageUsers(props) {
                                 </div>
                                 <div className="dashboard-user-btns">
                                     <button
-                                        onClick={() => handleEditClick(user.email)}
+                                        onClick={() => handleEditClick(user)}
                                         type="button"
                                         className="dashboard-user-btn">
                                             Edit
@@ -207,7 +237,9 @@ export default function ManageUsers(props) {
                         )
                     })
                 }
+                {/* Show message when the end of user list is reached */}
             {usersListEnd && <p className="user-list-end">No more users to show.</p>}
+            {/* Show next/prev pagination buttons when page is loaded */}
             {!loading &&
                 <div className="dashboard-users-pagination">
                     <button

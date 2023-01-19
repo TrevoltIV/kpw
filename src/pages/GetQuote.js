@@ -1,6 +1,6 @@
 import './getquote.css'
 import { lazy } from 'react'
-const Header = lazy(() => import('../components/Header'))
+const Header = lazy(() => import('../components/main/Header'))
 
 
 export default function Home() {

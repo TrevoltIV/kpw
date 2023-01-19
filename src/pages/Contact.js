@@ -2,7 +2,7 @@ import './contact.css'
 import { setDefaultEventParameters } from 'firebase/analytics'
 import { useState, lazy } from 'react'
 const Loading = lazy(() => import('../components/animations/Loading'))
-const Header = lazy(() => import('../components/Header'))
+const Header = lazy(() => import('../components/main/Header'))
 
 
 export default function Home() {

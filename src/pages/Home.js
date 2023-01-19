@@ -6,7 +6,7 @@ import { useEffect, useState, lazy } from 'react'
 const GetAQuote = lazy(() => import('../components/home-page/GetAQuote'))
 const BeforeAfter = lazy(() => import('../components/home-page/BeforeAfter'))
 const Welcome = lazy(() => import('../components/home-page/Welcome'))
-const Header = lazy(() => import('../components/Header'))
+const Header = lazy(() => import('../components/main/Header'))
 
 
 export default function Home() {

@@ -4,7 +4,7 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import { app, db, auth, user } from '../firebase/config'
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth"
 import { collection, doc, setDoc, getDoc } from 'firebase/firestore'
-const Header = lazy(() => import('../components/Header'))
+const Header = lazy(() => import('../components/main/Header'))
 
 
 
