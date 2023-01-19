@@ -1,6 +1,5 @@
-import { doc, setDoc, getDoc, collection, where, query, getDocs } from 'firebase/firestore'
-import { db, auth, user } from '../firebase/config'
-import { useEffect, useState, lazy } from 'react'
+import { collection, query, getDocs } from 'firebase/firestore'
+import { db } from '../firebase/config'
 
 
 
@@ -10,7 +9,7 @@ import { useEffect, useState, lazy } from 'react'
 const searchAlgo = async (input) => {
 
     let searchResults = []
-    let searchWords = searchTerm.split(" ")
+    let searchWords = input.split(" ")
 
     // Fetch all posts from database
     const postsRef = collection(db, "posts")
@@ -35,12 +34,14 @@ const searchAlgo = async (input) => {
                         item.score += 0.8
                     }
                 }
+
+                // Add posts with a score above 0 to results
                 if (item.score > 0) {
                     searchResults.push(item)
                 }
             })
         } else {
-            console.log("No posts matching your search.")
+            return "No posts matched your search."
         }
 
         // Sort results by highest match score
