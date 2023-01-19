@@ -16,7 +16,7 @@ const searchAlgo = async (input) => {
     const q = query(postsRef)
     const querySnapshot = await getDocs(q)
         if (!querySnapshot.empty) {
-            querySnapshot.forEach(function(doc) {
+            querySnapshot.forEach((doc) => {
                 let item = doc.data()
                 item.score = 0
     
