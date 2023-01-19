@@ -12,6 +12,7 @@ const searchAlgo = async (input) => {
     let searchResults = []
     let searchWords = searchTerm.split(" ")
 
+    // Fetch all posts from database
     const postsRef = collection(db, "posts")
     const q = query(postsRef)
     const querySnapshot = await getDocs(q)
@@ -23,6 +24,7 @@ const searchAlgo = async (input) => {
                 for (let i = 0; i < searchWords.length; i++) {
                     let searchWord = searchWords[i]
     
+                    // Add points to score for each matching word
                     if (item.title.includes(searchWord)) {
                         item.score += 1
                     }
@@ -41,6 +43,7 @@ const searchAlgo = async (input) => {
             console.log("No posts matching your search.")
         }
 
+        // Sort results by highest match score
         searchResults.sort((a, b) => {
             return b.score - a.score
         })
