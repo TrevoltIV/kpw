@@ -41,7 +41,7 @@ const searchAlgo = async (input) => {
                 }
             })
         } else {
-            return "No posts matched your search."
+            return false
         }
 
         // Sort results by highest match score
@@ -49,7 +49,7 @@ const searchAlgo = async (input) => {
             return b.score - a.score
         })
         
-        displaySearchResults(searchResults)
+        return searchResults
 }
 
 
